@@ -503,7 +503,77 @@ function hmrAcceptRun(bundle, id) {
 }
 
 },{}],"ebWYT":[function(require,module,exports) {
-console.log("hi");
+var _catApi = require("./cat-api");
+const breedSelect = document.querySelector(".breed-select");
+const catInfo = document.querySelector(".cat-info");
+breedSelect.addEventListener("change", changeBreed);
+function changeBreed(evt) {
+    const id = evt.currentTarget.value;
+    (0, _catApi.fetchBreeds)(id).then((data)=>{
+        console.log(data);
+    }).catch((error)=>console.log(error));
+}
+(0, _catApi.onFetchBreeds)().then((data)=>console.log(data)).catch((error)=>console.log(error));
+(0, _catApi.onFetchBreeds)().then((data)=>{
+    const breedSelect1 = document.querySelector(".breed-select");
+    for(let i = 0; i < data.length; i++){
+        const { name , id  } = data[i];
+        const opt = `<option value="${id}">${name}</option>`;
+        breedSelect1.insertAdjacentHTML("beforeend", opt);
+    }
+}).catch((error)=>console.log(error));
+
+},{"./cat-api":"5IWAT"}],"5IWAT":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "fetchBreeds", ()=>fetchBreeds);
+parcelHelpers.export(exports, "onFetchBreeds", ()=>onFetchBreeds);
+function fetchBreeds(id) {
+    const BASE_URL = "https://api.thecatapi.com/v1";
+    const API_KEY = "live_gENyqxI4CKTup2rVYxuz2kdHYhpulfAjA9RU9PsgU0gFtQRExezYdbdcj24XVkhs";
+    return fetch(`${BASE_URL}/images/search?api_key=${API_KEY}&breed_ids=${id}`).then((resp)=>{
+        if (!resp.ok) throw new Error(resp.statusText);
+        return resp.json();
+    });
+}
+function onFetchBreeds() {
+    const BASE_URL = "https://api.thecatapi.com/v1";
+    const API_KEY = "live_gENyqxI4CKTup2rVYxuz2kdHYhpulfAjA9RU9PsgU0gFtQRExezYdbdcj24XVkhs";
+    return fetch(`${BASE_URL}/breeds?api_key=${API_KEY}`).then((resp)=>{
+        if (!resp.ok) throw new Error(resp.statusText);
+        return resp.json();
+    });
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, "__esModule", {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
 
 },{}]},["aRq6p","ebWYT"], "ebWYT", "parcelRequired7c6")
 
