@@ -1,4 +1,4 @@
-import {fetchBreeds, onFetchBreeds} from './cat-api'
+import {fetchBreeds, fetchCatByBreed} from './cat-api'
 
 const breedSelect = document.querySelector('.breed-select')
 const catInfo = document.querySelector('.cat-info')
@@ -8,23 +8,18 @@ breedSelect.addEventListener('change', changeBreed)
 
 function changeBreed(evt) {
     const id = evt.currentTarget.value;
-    fetchBreeds(id)
+    fetchCatByBreed(id)
         .then(data => {
-            console.log(data);
+            data.map(({name})=> console.log(name))
         })
         .catch(error => console.log(error))
 }
 
-
-onFetchBreeds().then(data => console.log(data)).catch(error => console.log(error))
-
-onFetchBreeds()
-.then(data => {            
-    const breedSelect = document.querySelector('.breed-select'); 
-    for (let i = 0; i < data.length; i++) {
-        const { name, id } = data[i];
+fetchBreeds()
+    .then(data => { 
+        data.map(({ name, id }) => {
         const opt = `<option value="${id}">${name}</option>`;
         breedSelect.insertAdjacentHTML('beforeend', opt);
-    }
+    })
 })
 .catch(error => console.log(error));
